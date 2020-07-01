@@ -1,0 +1,27 @@
+DROP TABLE IF EXISTS books;
+ 
+CREATE TABLE books (
+  bid INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(250) NOT NULL,
+  type VARCHAR(250) NOT NULL,
+  price DECIMAL(8,2) DEFAULT NULL,
+  author VARCHAR (250) NOT NULL
+);
+ 
+INSERT INTO books (title, type, price, author) VALUES
+  ('Sky is the limit', 'General', 800, 'Prikshit'),
+  ('Sky', 'General', 900, 'Rahul'),
+  ('Spring Boot 2.0', 'Framework', 800, 'Yatin'),
+  ('Oracle', 'Database', 800, 'Harpreet');
+
+DROP TABLE IF EXISTS records;
+
+CREATE TABLE records(
+  record_id INT AUTO_INCREMENT PRIMARY KEY,
+  bid INT NOT NULL,
+  type  VARCHAR(250) NOT NULL,	  
+  uid INT NOT NULL
+  );
+ 
+
+

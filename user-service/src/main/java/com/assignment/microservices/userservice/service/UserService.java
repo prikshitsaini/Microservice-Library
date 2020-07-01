@@ -18,23 +18,19 @@ public class UserService implements IUserService {
 	private UserRepository repository;
 
 	@Override
-	public Optional<User> getUserDetail(Integer id) {
-
+	public User getUserDetail(Integer id) {
 		if (id == null) {
 			throw new BaseException(" Request param can't be null . " + id);
 		}
 
-		User user = repository.findById(id)
+		return repository.findById(id)
 				.orElseThrow(() -> new UserNotFoundException("No user found for user id :" + String.valueOf(id)));
 
-		return Optional.ofNullable(user) ;
 	}
 
 	@Override
 	public boolean checkUserExist(int id) {
-		
 		return repository.existsById(id);
-
 	}
 
 	@Override
@@ -44,7 +40,6 @@ public class UserService implements IUserService {
 
 	@Override
 	public boolean addUser(User user) {
-
 		List<User> list = repository.findByFirstNameAndLastNameAndContactNo(user.getFirstName(), user.getLastName(),
 				user.getContactNo());
 		if (list.size() > 0) {

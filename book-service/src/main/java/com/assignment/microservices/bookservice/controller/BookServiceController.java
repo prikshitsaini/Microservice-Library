@@ -25,7 +25,7 @@ public class BookServiceController {
 	@GetMapping("/book/{bid}")
 	public Book retrieveBook(@PathVariable int bid) {
 
-		return bookService.getBookDetail(bid).get();
+		return bookService.getBookDetail(bid);
 	}
 	
 
@@ -36,7 +36,7 @@ public class BookServiceController {
 	
 	@GetMapping("/books/user/{uid}")
 	public List<Book> retrieveBooksIssued(@PathVariable int uid){
-		return bookService.getIssuedBooks(uid).get(); 
+		return bookService.getIssuedBooks(uid);
 	}
 	
 	@PostMapping("/book/add")
@@ -45,10 +45,12 @@ public class BookServiceController {
 		
 		boolean result = bookService.addBook(book);
 		if(!result) {
-			return new ResponseEntity<String>("Similar book is already present!", HttpStatus.CONFLICT);
+			return new ResponseEntity<String>("Similar book is already present!",
+					HttpStatus.CONFLICT);
 		}
 		else {
-			return 	new ResponseEntity<String>("Book is succesfully added!", HttpStatus.CREATED);
+			return 	new ResponseEntity<String>("Book is successfully added!",
+					HttpStatus.CREATED);
 		}
 	}
 	
@@ -58,10 +60,12 @@ public class BookServiceController {
 		boolean result = bookService.issueBook(uid,bid);
 		
 		if(!result) {
-			return new ResponseEntity<String>("Book is already issued!",HttpStatus.CONFLICT);
+			return new ResponseEntity<String>("Book is already issued!",
+					HttpStatus.CONFLICT);
 		}
 		else {
-			return new ResponseEntity<String>("Book successfully issued to User with user id: "+uid,HttpStatus.OK);
+			return new ResponseEntity<String>("Book successfully issued to User" +
+					" with user id: " + uid, HttpStatus.OK);
 		}	
 		
 	}

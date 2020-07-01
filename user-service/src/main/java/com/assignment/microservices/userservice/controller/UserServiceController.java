@@ -26,7 +26,7 @@ public class UserServiceController {
 	@GetMapping("/user/{uid}")
 	public User retrieveUserDetails(@PathVariable int uid) {
 
-		return userService.getUserDetail(uid).get();
+		return userService.getUserDetail(uid);
 	}
 
 	@GetMapping("/user/check/{uid}")

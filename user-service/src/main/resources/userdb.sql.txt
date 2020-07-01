@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS user;
+ 
+CREATE TABLE user (
+  uid INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(250) NOT NULL,
+  last_name VARCHAR(250) NOT NULL,
+  age INT DEFAULT NULL,
+  contact_no NUMBER(20) DEFAULT NULL
+);
+ 
+INSERT INTO user (first_name, last_name,age, contact_no) VALUES
+  ('Prikshit', 'Saini', 26, 8968004913),
+  ('Bill', 'Gates', 65, 8968002912),
+  ('Alberto', 'Rossi',58, 8968004919);
