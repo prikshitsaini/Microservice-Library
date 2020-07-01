@@ -8,7 +8,7 @@ import com.assignment.microservices.bookservice.exceptions.BookNotFoundException
 
 public interface IBookService {
 	
-	Optional<Book> getBookDetail(Integer id) throws BookNotFoundException;
+	Book getBookDetail(Integer id) throws BookNotFoundException;
 	
 	boolean addBook(Book book);
 	
@@ -18,6 +18,6 @@ public interface IBookService {
 	
 	boolean issueBook(Integer uid,Integer bid);
 
-	Optional<List<Book>> getIssuedBooks(Integer id);
+	List<Book> getIssuedBooks(Integer id);
 
 }

@@ -1,11 +1,8 @@
 package com.assignment.microservices.userservice;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import com.assignment.microservices.userservice.bean.User;
+import com.assignment.microservices.userservice.controller.UserServiceController;
+import com.assignment.microservices.userservice.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -22,108 +19,109 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.assignment.microservices.userservice.bean.User;
-import com.assignment.microservices.userservice.controller.UserServiceController;
-import com.assignment.microservices.userservice.service.UserService;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = UserServiceController.class)
 class UserServiceApplicationTests {
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@MockBean
-	private UserService userService;
+    @MockBean
+    private UserService userService;
 
-	Optional<User> mockUser = Optional.ofNullable(new User(1, "Prikshit", "Saini", 26, 8968004913L));
+    User mockUser = new User(1, "Prikshit", "Saini", 26, 8968004913L);
 
-	String exampleUserJson = "{\"id\":4,\"firstName\":\"Rahul\",\"lastName\":\"Saini\",\"age\":26,\"contactNo\":8968004914}";
-	
-	List<User> mockUsers = Arrays.asList(new User(1, "Prikshit", "Saini", 26, 8968004913L),
-									 new User(2, "Yatin", "Batra", 26, 8968004914L));
-	
-	
-	@Test
-	public void retrieveUserDetails() throws Exception{
-		
-		Mockito.when(
-				userService.getUserDetail(Mockito.anyInt())).thenReturn(mockUser);
+    String exampleUserJson = "{\"id\":4,\"firstName\":\"Rahul\",\"lastName\":\"Saini\",\"age\":26,\"contactNo\":8968004914}";
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-				"/user/1").accept(
-				MediaType.APPLICATION_JSON);
+    List<User> mockUsers = Arrays.asList(new User(1, "Prikshit", "Saini", 26, 8968004913L),
+            new User(2, "Yatin", "Batra", 26, 8968004914L));
 
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		System.out.println(result.getResponse());
-		String expected = "{id:1,firstName:Prikshit,lastName: Saini,age:26,contactNo:8968004913}";
+    @Test
+    public void retrieveUserDetails() throws Exception {
 
-		JSONAssert.assertEquals(expected, result.getResponse()
-				.getContentAsString(), false);
-			
-	}
-	
-	@Test
-	public void addUser() throws Exception{
+        Mockito.when(
+                userService.getUserDetail(Mockito.anyInt())).thenReturn(mockUser);
 
-		boolean userAdded = true;
-		
-		Mockito.when(
-				userService.addUser(Mockito.any(User.class))).thenReturn(userAdded);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/user/1").accept(
+                MediaType.APPLICATION_JSON);
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders
-				.post("/user/add")
-				.accept(MediaType.APPLICATION_JSON).content(exampleUserJson)
-				.contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        System.out.println(result.getResponse());
+        String expected = "{id:1,firstName:Prikshit,lastName: Saini,age:26,contactNo:8968004913}";
 
-		MockHttpServletResponse response = result.getResponse();
+        JSONAssert.assertEquals(expected, result.getResponse()
+                .getContentAsString(), false);
 
-		assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-		
-		String expectedResponse = "User Created Successfully of id:4";
-		
-		assertEquals(expectedResponse, result.getResponse().getContentAsString());
+    }
 
-	}
+    @Test
+    public void addUser() throws Exception {
 
-	@Test
-	public void retrieveUsers() throws Exception {
-		Mockito.when(
-				userService.getUsers()).thenReturn(mockUsers);
+        boolean userAdded = true;
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-				"/users").accept(
-				MediaType.APPLICATION_JSON);
+        Mockito.when(
+                userService.addUser(Mockito.any(User.class))).thenReturn(userAdded);
 
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/user/add")
+                .accept(MediaType.APPLICATION_JSON).content(exampleUserJson)
+                .contentType(MediaType.APPLICATION_JSON);
 
-		System.out.println(result.getResponse());
-		String expected = "[{id:1, firstName: Prikshit, lastName: Saini, age: 26, contactNo: 8968004913},"
-				+ "			{id:2, firstName: Yatin, lastName: Batra, age: 26, contactNo: 8968004914}]";
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
-		JSONAssert.assertEquals(expected, result.getResponse()
-				.getContentAsString(), false);
-	}
-	
-	@Test
-	public void userExist() throws Exception{
-		
-		Mockito.when(
-				userService.checkUserExist(Mockito.anyInt())).thenReturn(true);
+        MockHttpServletResponse response = result.getResponse();
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-				"/user/check/1").accept(
-				MediaType.APPLICATION_JSON);
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
 
-		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        String expectedResponse = "User Created Successfully of id:4";
 
-		System.out.println(result.getResponse());
+        assertEquals(expectedResponse, result.getResponse().getContentAsString());
 
-		assertEquals("true", result.getResponse().getContentAsString());
-			
-	}
-	
+    }
+
+    @Test
+    public void retrieveUsers() throws Exception {
+        Mockito.when(
+                userService.getUsers()).thenReturn(mockUsers);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/users").accept(
+                MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        System.out.println(result.getResponse());
+        String expected = "[{id:1, firstName: Prikshit, lastName: Saini, age: 26, contactNo: 8968004913},"
+                + "			{id:2, firstName: Yatin, lastName: Batra, age: 26, contactNo: 8968004914}]";
+
+        JSONAssert.assertEquals(expected, result.getResponse()
+                .getContentAsString(), false);
+    }
+
+    @Test
+    public void userExist() throws Exception {
+
+        Mockito.when(
+                userService.checkUserExist(Mockito.anyInt())).thenReturn(true);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/user/check/1").accept(
+                MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        System.out.println(result.getResponse());
+
+        assertEquals("true", result.getResponse().getContentAsString());
+
+    }
+
 }

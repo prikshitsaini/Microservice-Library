@@ -9,7 +9,7 @@ import com.assignment.microservices.userservice.exceptions.UserNotFoundException
 
 public interface IUserService {
 	
-	Optional<User> getUserDetail(Integer id) throws UserNotFoundException,BaseException ;
+	User getUserDetail(Integer id) throws UserNotFoundException,BaseException ;
 	
 	boolean checkUserExist(int id);
 	
